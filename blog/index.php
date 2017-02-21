@@ -1,27 +1,48 @@
 <?php
 
-try {
+
     $dbname="root";
     $dbpass="123456";
     $dbhost="127.0.0.1";
     $dbdatabase="blog";
     $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
 
-    $strsql="SELECT * FROM `article`  ORDER BY `create_time` DESC";
-    // $strsql="SELECT * FROM `article` WHERE `type`=".$p." ORDER BY `create_time` DESC";
-    $result=$db_connect->query($strsql);
-    $data = array();
-    $result->data_seek(0); #重置指针到起始
-    while($row = $result->fetch_assoc())
-    {
-        $data[] = $row;
-    }
+    $strsql="SELECT `name` FROM `category` ";
+  if ($stmt = $db_connect->prepare($strsql))
+	{
+	    $stmt->execute();
+	    $stmt->store_result();
+	    $row = $stmt->num_rows;
+	    $stmt->bind_result($name);
+	    $data = array();
+	    while ($stmt->fetch())
+	    {
+	    	$data []= $name;
+	       
+	    }
+	    	$stmt->close();
+	}
 
-        $result->close();
-        $db_connect->close();
-     
-    }
-    catch (Exception $e){}
+  $strsql2="SELECT `id`,`title`,`link` FROM `article` ORDER BY `create_time` DESC";
+  if ($stmt2 = $db_connect->prepare($strsql2))
+	{
+	    $stmt2->execute();
+	    $stmt2->store_result();
+	    $row2= $stmt2->num_rows;
+	    $stmt2->bind_result($id,$title,$link);
+	    $article = array();
+	    while ($stmt2->fetch())
+	    {
+	    	$article ['id'][]= $id;
+	    	$article ['title'][]= $title;
+	    	$article ['link'][]= $link;
+	       
+	    }//var_dump($article);die;
+	    $stmt2->close();
+	}
+		$db_connect->close();
+
+  
  
 ?>
 
@@ -36,19 +57,10 @@ try {
     <tr>
         <td><p><h1>OurBlog</h1></p></td>
         <td style="width: 50px"></td>
-        <td><a href="./index.php" style="text-decoration:none; "><p>HEAD</p></a></td>
+        <?php  for($i=0;$i<$row;$i++) { ?>
+        <td><a href="./index.php" style="text-decoration:none; "><p><?php   echo  $data[$i]; ?></p></a></td>
         <td style="width: 50px"></td>
-        <td><a href="./data.php?p=linux" style="text-decoration:none; "><p>LINUX</p></a></td>
-        <td style="width: 50px"></td>
-        <td><a href="./data.php?p=apache" style="text-decoration:none; "><p>APACHE</p></a></td>
-        <td style="width: 50px"></td>
-        <td><a href="./data.php?p=php" style="text-decoration:none; "><p>PHP</p></a></td>
-        <td style="width: 50px"></td>
-        <td><a href="./data.php?p=mysql" style="text-decoration:none; "><p>MYSQL</p></a></td>
-        <td style="width: 50px"></td>
-        <td><a href="./data.php?p=js" style="text-decoration:none; "><p>JS</p></a></td>
-        <td style="width: 50px"></td>
-        <td><a href="./data.php?p=misc" style="text-decoration:none; "><p>MISC</p></a></td>
+      <?php } ?>
     </tr>
 
 </table>
@@ -58,13 +70,13 @@ try {
 <div style="text-align: center;margin-top: 50px">
 <table>
    <?php 
-        foreach ($data as $k => $v) {     ?>
+        for($j=0;$j<$row2;$j++) {     ?>
         <tr>
-     <?php  if($v['link'] == '')  {  ?>
-               <td height="30px" align="left"><a href="./page.php?id=<?php echo $v['id']; ?>" style="text-decoration:none; "><?php echo $v['title']; ?></a> </td>
+     <?php  if($article['link'][$j] == '')  {  ?>
+               <td height="30px" align="left"><a href="./page.php?id=<?php echo $article['id'][$j]; ?>" style="text-decoration:none; "><?php echo $article['title'][$j]; ?></a> </td>
      <?php } else {  ?>
         
-    <td height="30px" align="left"><a href=" https://<?php echo $v['link']; ?>" style="text-decoration:none; "><?php echo $v['title']; ?></a> 
+    <td height="30px" align="left"><a href=" https://<?php echo $article['link'][$j]; ?>" style="text-decoration:none; "><?php echo $article['title'][$j]; ?></a> 
 
         </td>    
         <?php  }  ?>
