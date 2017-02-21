@@ -81,16 +81,22 @@ try {
 <div style="text-align: center;margin-top: 50px">
 <table>
    <?php 
-        foreach ($data as $k => $v) {   ?>
+        foreach ($data as $k => $v) {     ?>
         <tr>
-        <td height="30px" align="left"><a href="./page.php?id=<?php echo $v['id']; ?>" style="text-decoration:none; "><?php echo $v['title']; ?></a></td>
-       
+     <?php  if($v['link'] == '')  {  ?>
+               <td height="30px" align="left"><a href="./page.php?id=<?php echo $v['id']; ?>" style="text-decoration:none; "><?php echo $v['title']; ?></a> </td>
+     <?php } else {  ?>
+        
+    <td height="30px" align="left"><a href=" https://<?php echo $v['link']; ?>" style="text-decoration:none; "><?php echo $v['title']; ?></a> 
+
+        </td>    
+        <?php  }  ?>
     </tr>
+  
 <?php       }
 
 
  ?>
-      
 </table>
 
 </div>

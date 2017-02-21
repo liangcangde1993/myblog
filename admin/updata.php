@@ -11,6 +11,7 @@
         $content = $_POST['text'];
         $own = $_POST['own'];
         $last_ex_time = $_POST['last_ex_time'];
+        $link = $_POST['link'];
         try {
             $dbname="root";
             $dbpass="123456";
@@ -18,7 +19,7 @@
             $dbdatabase="blog";
             $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
 
-            $strsql="UPDATE `article` SET `title` = '$title',`content`='$content',`own`='$own',`last_ex_time`='$last_ex_time' WHERE `id` = ".$id;
+            $strsql="UPDATE `article` SET `title` = '$title',`content`='$content',`own`='$own',`last_ex_time`='$last_ex_time' ,`link`='$link'  WHERE `id` = ".$id;
             $result=$db_connect->query($strsql);
             $row= mysqli_affected_rows($db_connect);//var_dump($row);die();
             // $result->close();

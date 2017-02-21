@@ -56,9 +56,16 @@ try {
 </div>
 
 <div style="margin-top: 20px">
+<p><label>title:</label></p>
+
 <input id="title"  type="text" name="title" value="<?php echo $v['title']; ?>" style="height: 40px;width: 60%" placeholder="title" >    
 </div>
+<div  style="margin-top: 20px">
+<p><label>link:</label></p>
 
+<input  type="text" id="link" name="link" value="<?php echo $v['link']; ?>" style="height: 40px;width: 60%"  placeholder="link"  onblur="check()" >    
+
+</div>
 <div style="margin-top: 20px">
 <textarea id="text" style="width: 80%;height: 400px;overflow-y:auto" placeholder="article"><?php echo $v['content']; ?></textarea>
 </div>
@@ -72,12 +79,42 @@ try {
 </div>
 
 <script type="text/javascript">
+
+            window.onload=function(){ 
+
+	  var link = document.getElementById("link").value;
+            var text = document.getElementById("text");
+            if(link != ''){
+                text.readOnly=true;
+                text.placeholder="deny write";
+            }else{
+                text.readOnly=false;
+                text.placeholder="article";
+            }
+
+	}
+
+	 function check(){
+            var link = document.getElementById("link").value;
+            var text = document.getElementById("text");
+            if(link != ''){
+                text.readOnly=true;
+                text.placeholder="deny write";
+            }else{
+                text.readOnly=false;
+                text.placeholder="article";
+            }
+
+        }
+	
+
 			function edit(id){
 			var select = document.getElementById("select").value;
 			var title = document.getElementById("title").value;
 			var text = document.getElementById("text").value;
+			var link = document.getElementById("link").value;
 			var timestamp=new Date().getTime();
-			var postData = {"id":id,"title":title,"text":text,"own":select,"last_ex_time":timestamp}, 
+			var postData = {"id":id,"title":title,"text":text,"own":select,"last_ex_time":timestamp,"link":$link}, 
 			postData = (function(obj){ 
 		    var str = "";
 		    for(var prop in obj){

@@ -1,5 +1,4 @@
 <html>
-<!-- <script type="text/javascript" src="./jquery-3.1.1.js"></script> -->
 			<title>login</title>
 			<body>
 			<div style="margin-top:200px;margin-left:400px">
@@ -8,7 +7,7 @@
 			</div>
 
 			<div style="text-align: center;margin-top: 100px">
-			<form method="post" action="../login.php" >
+			<form method="post" action="" >
 			<div style="margin-left: 20px ;height: 40px">
 			<span style="height: 30px">E-mail:</span><input type="text" name="email" id="email" style="height: 30px"></br>
 			</div>
@@ -17,12 +16,11 @@
 			<span style="height: 30px">password:</span><input type="password" name="pwd" id="pwd" style="height: 30px"></br>
 			</div>
 			
-			<!-- <button type="submit">login</button> -->
-			<input style="border-radius: 3px;height: 35px;width: 50px" type="button" name="" id="btn" value="login" onclick="a()">
+			<input style="border-radius: 3px;height: 35px;width: 50px" type="button" name="" id="btn" value="login" onclick="login()">
 
 			</form>	
 <script type="text/javascript">
-		function a(){
+		function login(){
 			var email = document.getElementById("email");
 			var pwd = document.getElementById("pwd");
 			var postData = {"email":email.value,"pwd":pwd.value}, 
@@ -41,8 +39,7 @@
 			    var XMLHttpReq = xhr;
 			    if (XMLHttpReq.readyState == 4 && XMLHttpReq.status == 200) {
 			        
-			             var text = XMLHttpReq.responseText;//console.log(text);return false;
-			    // alert(text);
+			             var text = XMLHttpReq.responseText;
 			         	if(text == 'true'){
 			         		alert('login success!');
 			         		window.location.href="./index.php"; 

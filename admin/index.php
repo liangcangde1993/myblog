@@ -1,33 +1,40 @@
 <?php
+
 session_start();
 if (!isset($_SESSION['pwd'])){
 	$url="./login.html";
 	echo "<script language=\"javascript\">";
 	echo "location.href=\"$url\"";
 	echo "</script>";
+	exit;
 }
-try {
+
     $dbname="root";
     $dbpass="123456";
     $dbhost="127.0.0.1";
     $dbdatabase="blog";
     $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
+    $db_connect->set_charset('utf8');
 
-    $strsql="select * from `article` ORDER BY `create_time` DESC";
-    $result=$db_connect->query($strsql);
-    $data = array();
-
-	$result->data_seek(0); #重置指针到起始
-	while($row = $result->fetch_assoc())
+    $strsql="SELECT `id`, `title`, `link` FROM `article` ORDER BY `create_time` DESC";
+   if ($stmt = $db_connect->prepare($strsql))
 	{
-	    $data[] = $row;
+	    $stmt->execute();
+	    $stmt->store_result();
+	    $row = $stmt->num_rows;
+	    $stmt->bind_result($id, $title, $link);
+	    $data = array();
+	    while ($stmt->fetch())
+	    {
+	    	$data ['id'][]= $id;
+	           $data['title'][]= $title;
+		$data ['link'][]= $link;
+	    }
+	    	$stmt->close();
 	}
+ 
+		$db_connect->close();
 
-	    $result->close();
-	    $db_connect->close();
-	 
-	}
-	catch (Exception $e){}
 ?>
 
 <!DOCTYPE html>
@@ -53,11 +60,11 @@ try {
 <div style="text-align: center;margin-top: 50px">
 <table>
    <?php 
-		foreach ($data as $k => $v) {   ?>
+		for ($i=0 ;$i<$row;$i++) {   ?>
 		<tr>
-        <td width="400px" align="left"><?php echo $v['title']; ?></td>
-        <td width="100px"><a href="./exchange.php?id=<?php echo $v['id']; ?>" style="text-decoration:none; ">edit</a></td>
-        <td width="100px"><a href="javascript:del('<?php echo $v['id']; ?>')" style="text-decoration:none; ">del</a></td>
+        <td width="400px" align="left"><?php echo $data['title'][$i]; ?></td>
+        <td width="100px"><a href="./exchange.php?id=<?php echo $data['id'][$i]; ?>" style="text-decoration:none; ">edit</a></td>
+        <td width="100px"><a href="javascript:del('<?php echo $data['id'][$i]; ?>')" style="text-decoration:none; ">del</a></td>
     </tr>
 <?php		}
 
@@ -70,7 +77,7 @@ try {
 			var check = confirm('R U sure to del it?');
 			if(check){
 			var postData = {"id":id}, 
-			postData = (function(obj){ // 转成post需要的字符串.
+			postData = (function(obj){ 
 		    var str = "";
 		    for(var prop in obj){
 		        str += prop + "=" + obj[prop] + "&"
@@ -90,7 +97,7 @@ try {
 		         	location.reload();
 		      }
 		      else{
-		         	alert('email or password error!');
+		         	alert('delete error!');
 		      	}     
 		    }
 			};
