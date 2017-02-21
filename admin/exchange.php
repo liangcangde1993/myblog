@@ -58,10 +58,10 @@ if (!isset($_SESSION['pwd'])){
 	    $stmt2->store_result();
 	    $row = $stmt2->num_rows;
 	    $stmt2->bind_result($name);
-	    $tag = array();
+	    $cate = array();
 	    while ($stmt2->fetch())
 	    {
-	    	$tag []= $name;
+	    	$cate []= $name;
 	       
 	    }
 	    	$stmt2->close();
@@ -97,7 +97,7 @@ if (!isset($_SESSION['pwd'])){
 <select id="select" style="width: 30%;height: 30px"><?php echo $data['own']; ?>
 <option value='category' selected="">category</option> 
 <?php for ($i=0; $i < $row; $i++) {     ?>
-<option value='<?php  echo $tag[$i]; ?>'><?php  echo $tag[$i]; ?></option> 
+<option value='<?php  echo $cate[$i]; ?>'><?php  echo $cate[$i]; ?></option> 
 <?php    }  ?>
 </select>
 </div>
