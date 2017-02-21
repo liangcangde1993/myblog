@@ -1,34 +1,7 @@
 <html>
 <title>edit blog </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="./css/jquery.tagsinput.css" />
-<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="./js/jquery.tagsinput.js"></script>
-<script type='text/javascript' src='./js/jquery-ui.min.js'></script>
-<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css" />
 
-<!--
-<script type="text/javascript">
-    
-    function onAddTag(tag) {
-        alert("Added a tag: " + tag);
-    }
-    function onRemoveTag(tag) {
-        alert("Removed a tag: " + tag);
-    }
-    
-    function onChangeTag(input,tag) {
-        alert("Changed a tag: " + tag);
-    }
-    
-    $(function() {
-
-        $('#tags_1').tagsInput({width:'auto'});
-
-    });
-
-</script>
--->
 <body>
 <div style="margin-top:200px;margin-left:400px">
 <table>
@@ -47,7 +20,7 @@
 <div style="text-align: left;margin-top: 50px">
 <div>
 <select id="select" style="width: 30%;height: 30px">
-<option value='own' selected="true">own</option> 
+<option value='category' selected="true">category</option> 
 <option value='life'>life</option> 
 <option value='work'>work</option> 
 <option value='play'>play</option> 
@@ -93,15 +66,13 @@
        function writeblog(){
             var select = document.getElementById("select").value;
             var title = document.getElementById("title").value;
-            var content = document.getElementById("content").value;//alert(title);return false;
-            var timestamp=new Date().getTime();
-        //    var tag = document.getElementById("tags_1").value;//alert(tag);return false;
+            var content = document.getElementById("content").value;
             var link = document.getElementById("link").value;
             if(link == ''){
             if (title == '' || content == '') {alert('please write all options!');return false;}
 
-            }//console.log('aaa');return false;
-            var postData = {"title":title,"content":content,"own":select,"create_time":timestamp,"link":link}, 
+            }
+            var postData = {"title":title,"content":content,"category":select,"link":link}, 
             postData = (function(obj){ 
             var str = "";
             for(var prop in obj){
@@ -109,7 +80,7 @@
             }
             str=str.substring(0,str.length-1);
             return str;
-            })(postData);//alert(postData);return false;
+            })(postData);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "./edit.php", true);
             xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -117,8 +88,7 @@
                 var XMLHttpReq = xhr;
                 if (XMLHttpReq.readyState == 4 && XMLHttpReq.status == 200) {
                     
-                         var text = XMLHttpReq.responseText;//console.log(text);return false;
-                // alert(text);
+                         var text = XMLHttpReq.responseText;
                         if(text == true){
                             alert('write file success!');
                             window.location.href="./index.php"; 
