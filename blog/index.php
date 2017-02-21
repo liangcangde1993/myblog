@@ -17,10 +17,10 @@
 	    $stmt->store_result();
 	    $row = $stmt->num_rows;
 	    $stmt->bind_result($name);
-	    $data = array();
+	    $date= array();
 	    while ($stmt->fetch())
 	    {
-	    	$data []= $name;
+	    	$date []= $name;
 	       
 	    }
 	    	$stmt->close();
@@ -63,7 +63,7 @@
         <td><p><h1>OurBlog</h1></p></td>
         <td style="width: 50px"></td>
         <?php  for($i=0;$i<$row;$i++) { ?>
-        <td><a href="./data.php?cate=<?php echo $data[$i]; ?>" style="text-decoration:none; "><p><?php   echo  $data[$i]; ?></p></a></td>
+        <td><a href="./date.php?cate=<?php echo $date[$i]; ?>" style="text-decoration:none; "><p><?php   echo  $date[$i]; ?></p></a></td>
         <td style="width: 50px"></td>
       <?php } ?>
     </tr>
