@@ -9,7 +9,7 @@
     }
 	
     if (!isset($_POST['email']) || !isset($_POST['pwd'])) {
-        header("Location: ./index.php"); 
+        header("Location: ./index.php"); exit;
     }
     
       $_POST['email'] = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
@@ -53,4 +53,6 @@
         } 
     }
    $stmt->close();
+	$db_connect->close();
+   
  ?>
