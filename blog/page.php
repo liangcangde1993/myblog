@@ -1,5 +1,5 @@
 <?php
-	if(!isset($_GET['id'])){
+	if(!isset($_GET['id']) || !is_int($_GET['id'])){
 		header("Location: ./index.php"); 
 		      exit;
 			}
