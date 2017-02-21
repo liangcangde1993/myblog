@@ -11,7 +11,9 @@
     $strsql="SELECT `name` FROM `category` ";
   if ($stmt = $db_connect->prepare($strsql))
 	{
-	    $stmt->execute();
+	      if (!$stmt->execute()) {
+				    	echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+				}  
 	    $stmt->store_result();
 	    $row = $stmt->num_rows;
 	    $stmt->bind_result($name);
@@ -27,7 +29,9 @@
   $strsql2="SELECT `id`,`title`,`link` FROM `article` ORDER BY `create_time` DESC";
   if ($stmt2 = $db_connect->prepare($strsql2))
 	{
-	    $stmt2->execute();
+	     if (!$stmt2->execute()) {
+		    	echo "Execute failed: (" . $stmt2->errno . ") " . $stmt2->error;
+				}  
 	    $stmt2->store_result();
 	    $row2= $stmt2->num_rows;
 	    $stmt2->bind_result($id,$title,$link);
