@@ -187,7 +187,7 @@ if (!isset($_SESSION['pwd'])){
 		    return str;
 			})(postData);
 			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "./updata.php", true);
+			xhr.open("POST", "./update.php", true);
 			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			xhr.onreadystatechange = function(){
 			    var XMLHttpReq = xhr;
