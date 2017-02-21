@@ -8,7 +8,7 @@
 		echo "</script>";
 		exit;
 	}
-	if(!isset($_POST['id'])){
+	if(!isset($_POST['id']) {
 	        header("Location: ./index.php"); 
 	        exit;
 	}
