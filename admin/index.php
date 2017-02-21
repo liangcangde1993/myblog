@@ -51,7 +51,7 @@ if (!isset($_SESSION['pwd'])){
         <td style="width: 100px"></td>
         <td><a href="" style="text-decoration:none; "><p>BlogManager</p></a></td>
         <td style="width: 100px"></td>
-        <td><a href="./edit.html" style="text-decoration:none; "><p>WriteBlog</p></a></td>
+        <td><a href="./edit_html.php" style="text-decoration:none; "><p>WriteBlog</p></a></td>
     </tr>
 </table>
 

@@ -6,6 +6,7 @@
     $dbhost="127.0.0.1";
     $dbdatabase="blog";
     $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
+    $db_connect->set_charset('utf8');
 
     $strsql="SELECT `name` FROM `category` ";
   if ($stmt = $db_connect->prepare($strsql))
@@ -37,7 +38,7 @@
 	    	$article ['title'][]= $title;
 	    	$article ['link'][]= $link;
 	       
-	    }//var_dump($article);die;
+	    }
 	    $stmt2->close();
 	}
 		$db_connect->close();
@@ -58,7 +59,7 @@
         <td><p><h1>OurBlog</h1></p></td>
         <td style="width: 50px"></td>
         <?php  for($i=0;$i<$row;$i++) { ?>
-        <td><a href="./index.php" style="text-decoration:none; "><p><?php   echo  $data[$i]; ?></p></a></td>
+        <td><a href="./data.php?cate=<?php echo $data[$i]; ?>" style="text-decoration:none; "><p><?php   echo  $data[$i]; ?></p></a></td>
         <td style="width: 50px"></td>
       <?php } ?>
     </tr>
