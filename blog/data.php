@@ -62,7 +62,7 @@
 			<div style="margin-top:200px;margin-left:400px">
 			<table>
 			    <tr>
-			        <td><p><h1>OurBlog</h1></p></td>
+			        <td><p><h1> <a href="./index.php" style="text-decoration:none; "> OurBlog</a></h1></p></td>
 			       <td style="width: 50px"></td>
 				        <?php  for($i=0;$i<$row;$i++) { ?>
 				        <td><a href="./data.php?cate=<?php echo $data[$i]; ?>" style="text-decoration:none; "><p><?php   echo  $data[$i]; ?></p></a></td>
