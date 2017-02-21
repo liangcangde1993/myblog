@@ -22,7 +22,7 @@ if (!isset($_SESSION['pwd'])){
     $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
     $db_connect->set_charset('utf8');
 
-    $strsql="select `id`,`title`,`link`,`content`,`own` from `article` where id =?";
+    $strsql="select `id`,`title`,`link`,`content`,`own` ,`tag` from `article` where id =?";
    if (!($stmt = $db_connect->prepare($strsql))) {
     echo "Prepare failed: (" . $db_connect->errno . ") " . $db_connect->error;
     }
@@ -31,7 +31,7 @@ if (!isset($_SESSION['pwd'])){
     echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
-    $stmt->bind_result($id,$title,$link,$content,$own);
+    $stmt->bind_result($id,$title,$link,$content,$own,$tag);
     if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
@@ -44,9 +44,29 @@ if (!isset($_SESSION['pwd'])){
 		$data ['link']= $link;
 		$data ['content']= $content;
 		$data ['own']= $own;
+		$data ['tag']= $tag;
 	    }
 	    
 	    $stmt->close();
+
+   $strsql2="SELECT `name` FROM `category` ";
+  if ($stmt2 = $db_connect->prepare($strsql2))
+	{
+	     if (!$stmt2->execute()) {
+		    	echo "Execute failed: (" . $stmt2->errno . ") " . $stmt2->error;
+				}  
+	    $stmt2->store_result();
+	    $row = $stmt2->num_rows;
+	    $stmt2->bind_result($name);
+	    $tag = array();
+	    while ($stmt2->fetch())
+	    {
+	    	$tag []= $name;
+	       
+	    }
+	    	$stmt2->close();
+	}
+		
 	    $db_connect->close();
 	 
 	
@@ -76,9 +96,9 @@ if (!isset($_SESSION['pwd'])){
 <div>
 <select id="select" style="width: 30%;height: 30px"><?php echo $data['own']; ?>
 <option value='category' selected="">category</option> 
-<option value='life'>life</option> 
-<option value='work'>work</option> 
-<option value='play'>play</option> 
+<?php for ($i=0; $i < $row; $i++) {     ?>
+<option value='<?php  echo $tag[$i]; ?>'><?php  echo $tag[$i]; ?></option> 
+<?php    }  ?>
 </select>
 </div>
 
@@ -95,6 +115,13 @@ if (!isset($_SESSION['pwd'])){
 </div>
 <div style="margin-top: 20px">
 <textarea id="text" style="width: 80%;height: 400px;overflow-y:auto" placeholder="article"  onblur="check_len()"><?php echo $data['content']; ?></textarea>
+</div>
+
+<div  style="margin-top: 20px">
+<p><label>tag:</label></p>
+
+<input  type="text" id="tag" name="tag" value="<?php echo $data['tag']; ?>" style="height: 40px;width: 60%"    >    
+
 </div>
 
 <div id="sub" style="margin-top: 30px">
@@ -148,8 +175,9 @@ if (!isset($_SESSION['pwd'])){
 			var title = document.getElementById("title").value;
 			var text = document.getElementById("text").value;
 			var link = document.getElementById("link").value;
+			var tag = document.getElementById("tag").value;
 			
-			var postData = {"id":id,"title":title,"text":text,"category":select,"link":link}, 
+			var postData = {"id":id,"title":title,"text":text,"category":select,"link":link,"tag":tag}, 
 			postData = (function(obj){ 
 		    var str = "";
 		    for(var prop in obj){
@@ -172,7 +200,7 @@ if (!isset($_SESSION['pwd'])){
 			         	}
 			         	else{
 			         		alert('exchange file error!');
-		         			//location.reload();
+		         			location.reload();
 
 			         	}
 			            

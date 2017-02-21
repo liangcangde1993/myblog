@@ -10,7 +10,7 @@
         }
    
 
-        	$requiredKeys = array('id','title', 'text','category','link');
+        	$requiredKeys = array('id','title', 'text','category','link','tag');
 	         foreach ($requiredKeys as $key) {
 	        if (!isset($_POST[$key])) {
 	            throw new InvalidArgumentException("missing required key $key");
@@ -21,6 +21,7 @@
         $content = $_POST['text'];
         $category = $_POST['category'];
         $link = $_POST['link'];
+        $tag = $_POST['tag'];
         $last_ex_time = time();
            $subject = trim($_POST['text']);
 	      $len     = mb_strlen($subject, 'UTF-8');
@@ -34,7 +35,7 @@
             $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
 	   $db_connect->set_charset('utf8');
 
-            $strsql="UPDATE `article` SET `title` = '$title',`content`='$content',`own`='$category',`last_ex_time`='$last_ex_time' ,`link`='$link'  WHERE `id` = ?";
+            $strsql="UPDATE `article` SET `title` = '$title',`content`='$content',`own`='$category',`last_ex_time`='$last_ex_time' ,`link`='$link' ,`tag`='$tag'  WHERE `id` = ?";
               if (!($stmt = $db_connect->prepare($strsql))) {
 	    echo "Prepare failed: (" . $db_connect->errno . ") " . $db_connect->error;
 	    }

@@ -74,6 +74,13 @@
 <textarea id="content" style="width: 80%;height: 400px;overflow-y:auto" placeholder="article" ></textarea>
 </div>
 
+<div  style="margin-top: 20px">
+<p><label>tag:</label></p>
+
+<input  type="text" id="tag" name="tag" value="" style="height: 40px;width: 60%"  placeholder=""  > <p>cut with ','</p>    
+
+</div>
+
 <div id="sub" style="margin-top: 30px">
     <button value="" id="btn" style="width: 80px;height: 40px;border-radius: 5px" onclick="writeblog()">OK</button>
 </div>
@@ -97,12 +104,13 @@
             var title = document.getElementById("title").value;
             var content = document.getElementById("content").value;
             var link = document.getElementById("link").value;
+            var  tag = document.getElementById("tag").value;
             if(link == ''){
             if (title == '' || content == '') {alert('please write all options!');return false;}
 
             }
 
-            var postData = {"title":title,"content":content,"category":select,"link":link}, 
+            var postData = {"title":title,"content":content,"category":select,"link":link,"tag":tag}, 
             postData = (function(obj){ 
             var str = "";
             for(var prop in obj){
