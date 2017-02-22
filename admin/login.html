@@ -38,17 +38,14 @@
 			xhr.onreadystatechange = function(){
 			    var XMLHttpReq = xhr;
 			    if (XMLHttpReq.readyState == 4 && XMLHttpReq.status == 200) {
-			        
-			             var text = XMLHttpReq.responseText;
-			         	if(text == 'true'){
-			         		
-			         		window.location.href="./index.php"; 
-			         	}
-			         	else{
-			         		alert('email or password error!');
-			         	}
-			            
-			        
+			             var  text = XMLHttpReq.responseText;
+			         if(text == "success"){
+			          window.location.href="./index.php";  	
+			             }else{
+			              alert(text);
+			          window.location.reload();      	
+			             }
+			           
 			    }
 			};
 			xhr.send(postData);
