@@ -79,7 +79,7 @@
 							         			location.reload();
 							      		}
 							      		else{
-							         			alert('delete error!');
+							         			alert(text);
 							      		}     
 								}
 							};

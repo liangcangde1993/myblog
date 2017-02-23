@@ -1,39 +1,41 @@
 <?php
 
 	session_start();
-	if (!isset($_SESSION['pwd'])){
-		$url="./login.html";
-		echo "<script language=\"javascript\">";
-		echo "location.href=\"$url\"";
-		echo "</script>";
+
+	if (!isset($_SESSION['userid'])){
+		echo "no login";
 		exit;
 	}
-	if(!isset($_POST['id']) {
-	        header("Location: ./index.php"); 
-	        exit;
-	}
 
-	    $id = $_POST['id'];
-	    $dbname="root";
-	    $dbpass="123456";
-	    $dbhost="127.0.0.1";
-	    $dbdatabase="blog";
-	    $db_connect= new mysqli($dbhost,$dbname,$dbpass,$dbdatabase);
-	    $db_connect->set_charset('utf8');
+	require_once("./pdo.php");
 
-	    $strsql="delete from `article` where `id` = ?";
-	     if (!($stmt = $db_connect->prepare($strsql))) {
-	    echo "Prepare failed: (" . $db_connect->errno . ") " . $db_connect->error;
-	    }
-	    $val = $id;
-	    if (!$stmt->bind_param("s", $val)) {
-	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-	}
-	    if (!$stmt->execute()) {
-	    	echo false;
-	}   
-	            echo  true; 
-	   $stmt->close();
-		$db_connect->close();
+	try{
+
+		if(!isset($_POST['id'])) {
+			throw new InvalidArgumentException('unset  argument id ');
+		}
+
+	} catch (InvalidArgumentException $e) {
+		print_r( $e->getMessage());
+		exit;
+	}	  
+
+	try{
+		$stmt = $pdo->prepare("DELETE FROM `article` WHERE `id` = ? ");
+    		$stmt->bindParam(1,$_POST['id']);
+   		$res = $stmt->execute();
+		if (!$res) {
+		    	echo "delete  failed";
+		}   
+		            echo  true; 
+		
+		$pdo = null;
+
+		} catch (PDOException $e) { 
+			exit;
+		}
+
+		
+	
 ?>
 
