@@ -5,7 +5,7 @@
 		  exit;
 	 }
 
-	require_once("./db.php");
+	require_once("./pdo.php");
 
 	try {
 
@@ -39,49 +39,29 @@
 		$passwd   = md5('yunzhao'.$_POST['pwd']);
 
 		} catch (InvalidArgumentException $e) {
-			echo $e->getMessage();
+			print_r( $e->getMessage());
 			exit;
 		}
 
 	try{
 
-		 $sql="SELECT `uid`,`password` FROM `user` WHERE `email` = ? ";
+		$stmt = $pdo->prepare("SELECT `uid`,`password` FROM `user` WHERE `email` = ? ");
+    		$stmt->bindParam(1,$email);
+   		$stmt->execute();
+		$row = $stmt->fetch();
 
-		if (!($stmt = $db_connect->prepare($sql))) {
-			throw new  Exception("Prepare failed: (" . $db_connect->errno . ") " . $db_connect->error);
-		 }
+		if($row['password'] ==$passwd){ 
+			$_SESSION['userid'] = $row['uid'];
+			echo 'success';
+		}else{
+			echo "email or 密码错误";
+		} 
+		$pdo = null;
 
-		if (!$stmt->bind_param("s", $email)) {
-			throw new Exception("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error); 
-		}
-
-		if (!$stmt->execute()) {
-			throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error); 
-		}  
-
-		if (!$stmt->bind_result($uid, $password)) {
-			throw new Exception("Binding output parameters failed: (" . $stmt->errno . ") " . $stmt->error); exit;	    	    
-		}
-
-		} catch (Exception $e) {
+		} catch (PDOException $e) { 
 			exit;
 		}
 			
-		$res = $stmt->fetch();
-
-		if(!$res){
-			        echo "没有这个用户名";exit;
-		}
-
-		if($password ==$passwd){ 
-			$_SESSION['userid'] = $uid;
-			echo 'login success';
-		}else{
-			echo "密码错误";
-		} 
-			    
-		$stmt->close();
-		$db_connect->close();
 
 
  
