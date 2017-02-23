@@ -35,7 +35,7 @@
 			<td style="width: 100px"></td>
 			<td><a href="" style="text-decoration:none; "><p>BlogManager</p></a></td>
 			<td style="width: 100px"></td>
-			<td><a href="./edit_html.php" style="text-decoration:none; "><p>WriteBlog</p></a></td>
+			<td><a href="./addblog.php" style="text-decoration:none; "><p>WriteBlog</p></a></td>
 			</tr>
 		</table>
 
@@ -46,7 +46,7 @@
 	   		<?php     for ($i=0 ;$i<$count;$i++) {   ?>
 			<tr>
 	       		 <td width="400px" align="left"><?php  echo $arr[$i]['title']; ?></td>
-	        		<td width="100px"><a href="./exchange.php?id=<?php echo $arr[$i]['id']; ?>" style="text-decoration:none; ">edit</a></td>
+	        		<td width="100px"><a href="./edit.php?id=<?php echo $arr[$i]['id']; ?>" style="text-decoration:none; ">edit</a></td>
 	        		<td width="100px"><a href="javascript:del('<?php echo $arr[$i]['id']; ?>')" style="text-decoration:none; ">del</a></td>
 	    		</tr>
 			<?php	}     ?>      
