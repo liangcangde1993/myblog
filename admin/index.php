@@ -1,25 +1,21 @@
 <?php
 	session_start();
-	if (!isset($_SESSION['userid'])){
-	header("Location: ./login.php"); 
-	exit;
-	}
+		if (!isset($_SESSION['userid'])){
+			header("Location: ./login.php"); 
+			exit;
+		}
+
+	header("Content-Type:text/html;charset=utf-8");
 	
 	require_once("./pdo.php");
 
 	try {
-		$stmt = $pdo->prepare("SELECT `id`,`title`,`link` FROM  `article` WHERE `uid` =? ORDER BY `create_time` DESC");
-		$stmt->bindParam(1, $_SESSION['userid']);
-		 $stmt->execute();
-		$arr =  array();
-		 while ($row = $stmt->fetch()) {
-		   	$arr[] = $row;
-		  }
+		$stmt = $pdo->query('SELECT id, title FROM article  WHERE uid = ' . $_SESSION['userid'] );
 		$pdo = null;
 	} catch (PDOException $e) {		   
 		    die();
 	}
-	$count = count($arr);	   
+
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +27,11 @@
 	<div style="margin-top:200px;margin-left:400px">
 		<table>
 			<tr>
-			<td><p><h1>OurBlog</h1></p></td>
-			<td style="width: 100px"></td>
-			<td><a href="" style="text-decoration:none; "><p>BlogManager</p></a></td>
-			<td style="width: 100px"></td>
-			<td><a href="./addblog.php" style="text-decoration:none; "><p>WriteBlog</p></a></td>
+				<td><p><h1>OurBlog</h1></p></td>
+				<td style="width: 100px"></td>
+				<td><a href="" style="text-decoration:none; "><p>BlogManager</p></a></td>
+				<td style="width: 100px"></td>
+				<td><a href="./addblog.php" style="text-decoration:none; "><p>WriteBlog</p></a></td>
 			</tr>
 		</table>
 
@@ -43,11 +39,13 @@
 
 	<div style="text-align: center;margin-top: 50px">
 		<table>
-	   		<?php     for ($i=0 ;$i<$count;$i++) {   ?>
+	   		<?php    
+	   			foreach ($stmt as $row) {
+	   		?>
 			<tr>
-	       		 <td width="400px" align="left"><?php  echo $arr[$i]['title']; ?></td>
-	        		<td width="100px"><a href="./edit.php?id=<?php echo $arr[$i]['id']; ?>" style="text-decoration:none; ">edit</a></td>
-	        		<td width="100px"><a href="javascript:del('<?php echo $arr[$i]['id']; ?>')" style="text-decoration:none; ">del</a></td>
+		       		 <td width="400px" align="left"><?php  echo htmlspecialchars($row['title']); ?></td>
+		        		<td width="100px"><a href="./edit.php?id=<?php echo $row['id']; ?>" style="text-decoration:none; ">edit</a></td>
+		        		<td width="100px"><a href="javascript:del('<?php echo $row['id']; ?>')" style="text-decoration:none; ">del</a></td>
 	    		</tr>
 			<?php	}     ?>      
 		</table>

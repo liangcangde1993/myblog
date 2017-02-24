@@ -28,25 +28,21 @@
 
 		$email = $_POST['email'];
 
-		if(strlen($_POST['pwd'])  > 8 ){
-			throw new InvalidArgumentException('password  max is  8  bit');
-		}
-
-		if(empty($_POST['pwd'])){
-			throw new InvalidArgumentException('password is  null');
+		if(strlen($_POST['pwd'])  < 8 || strlen($_POST['pwd']) > 50  ){
+			throw new InvalidArgumentException('password  length error');
 		}
 
 		$passwd   = md5('yunzhao'.$_POST['pwd']);
 
 		} catch (InvalidArgumentException $e) {
-			print_r( $e->getMessage());
+			echo ( $e->getMessage());
 			exit;
 		}
 
 	try{
 
-		$stmt = $pdo->prepare("SELECT `uid`,`password` FROM `user` WHERE `email` = ? ");
-    		$stmt->bindParam(1,$email);
+		$stmt = $pdo->prepare("SELECT `uid`,`password` FROM `user` WHERE `email` = :email ");
+    		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
    		$stmt->execute();
 		$row = $stmt->fetch();
 

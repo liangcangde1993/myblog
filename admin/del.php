@@ -15,10 +15,14 @@
 			throw new InvalidArgumentException('unset  argument id ');
 		}
 
-	} catch (InvalidArgumentException $e) {
-		print_r( $e->getMessage());
-		exit;
-	}	  
+		if (! filter_var($_POST['id'], FILTER_VALIDATE_INT, array( 'options' => array('min_range' => 1) ))) {
+		        throw new InvalidArgumentException('invalid id');
+		}
+
+		} catch (InvalidArgumentException $e) {
+			print_r( $e->getMessage());
+			exit;
+			}	  
 
 	try{
 		$stmt = $pdo->prepare("DELETE FROM `article` WHERE `id` = ? ");
@@ -33,7 +37,7 @@
 
 		} catch (PDOException $e) { 
 			exit;
-		}
+			}
 
 		
 	
